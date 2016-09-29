@@ -1,13 +1,17 @@
+#!/usr/bin/env python3
+
 from raspberry.gmail_utils import sendEmail
 from raspberry.temperature_utils import getCpuTemperature
 from raspberry.temperature_utils import getGpuTemperature
-
+import os
 
 import configparser
 import time
 
 config = configparser.ConfigParser()
-config.read('env/config.cfg')
+#config.read('env/config.cfg')
+config.read(os.path.join(os.path.abspath(os.path.dirname(__file__)), '../env', 'config.cfg'))
+
 gmailFromAddr = config.get('gmail', 'fromAddrs')
 gmailPassword= config.get('gmail', 'password')
 gmailToAddr = config.get('gmail', 'toAddrs')
