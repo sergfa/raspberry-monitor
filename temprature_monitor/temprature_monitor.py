@@ -1,4 +1,8 @@
 from raspberry.gmail_utils import sendEmail
+from raspberry.temperature_utils import getCpuTemperature
+from raspberry.temperature_utils import getGpuTemperature
+
+
 import configparser
 import time
 
@@ -13,11 +17,13 @@ cpuThreshold = config.getint('TEMPERATURE_MONITOR', 'cpuThreshold')
 gpuThreshold = config.getint('TEMPERATURE_MONITOR', 'gpuThreshold')
 checkInterval = config.getint('TEMPERATURE_MONITOR', 'checkInterval')
 
-def getCPUTemperature():
-    return 60
+def getCpuTemp():
+    temp = 60 if appMode == "dev" else getCpuTemperature()
+    return temp
 	
-def getGPUTemperature():
-    return 60
+def getGpuTemp():
+    temp = 60 if appMode == "dev" else getGpuTemperature()
+    return temp
 
 
 
@@ -29,8 +35,8 @@ def sendTemprature(cpuTemp, gpuTemp):
 
    
 def checkTemperature():
-    cpuTemp = getCPUTemperature()
-    gpuTemp = getGPUTemperature()
+    cpuTemp = getCpuTemp()
+    gpuTemp = getGpuTemp()
     print("CPU temperature: " + str(cpuTemp), ", GPU temperature: " + str(gpuTemp))
     if(cpuTemp >= cpuThreshold or gpuTemp >= gpuThreshold) :
         sent = sendTemprature(cpuTemp, gpuTemp);
