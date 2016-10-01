@@ -1,6 +1,6 @@
 ## Overview
 
-Python scripts for monitoring Raspberry Pi. Sends email alerts when CPU/GPU temperature when threshold is exceeded 
+Python scripts for monitoring Raspberry Pi. Sends email alerts when CPU/GPU temperature threshold is exceeded 
 ## Code Example
 
 
