@@ -2,3 +2,4 @@ build/
 dist/
 *.pyc
 logs/*.log
+env/config.cfg
