@@ -1,19 +1,7 @@
-## Overview
+#Get email alerts when the temperature of Raspberry Pi is too high
+---
 
-Python scripts for monitoring Raspberry Pi. Sends email alerts when CPU/GPU temperature threshold is exceeded 
-## Code Example
-
-
-## Motivation
+#Introduction
 
 
-## Installation
-
-
-## Contributors
-
-send an email if you want to contribute
-
-## License
-
-MIT
+Looking for useful project for your Raspberry Pi? Setup a sensor-free project that written in python to let you know when temperature of your Raspbery Pi is too high. [Read more...](https://github.com/sergfa/raspberry/wiki)
