@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 
 from raspberry.gmail_utils import sendEmail
-import os, configparser, time, logging
+from raspberry.presense_utils import readPresenseData
+from raspberry.presense_utils import loadInitialPresenses
+
+
+import os, configparser, time, logging, sys
 
 
 config = configparser.ConfigParser()
@@ -20,25 +24,13 @@ checkInterval = config.getint('PRESENSE_MONITOR', 'checkInterval')
 
 logging.debug("Presense monitor module has been started")
 
-presenseData = None;
-
-def loadInitialPresenses():
-    data = {}
-    presenseFilename = os.path.join(os.path.abspath(os.path.dirname(__file__)), '../env', 'presense.txt')
-    with open(presenseFilename, "r") as lines:
-        for line in lines:
-            line = line.rstrip()
-            person = line.split(None, 1);
-            data[person[0]] = [person[1], -1]		
-    return data
-
 def checkPresense():
     logging.debug("checking presense")
 
-def main():	
+def main():	    
     presenseData = loadInitialPresenses();
     print(presenseData)
-	
+    print(readPresenseData())	
     while True:
         checkPresense()
         time.sleep(checkInterval)
