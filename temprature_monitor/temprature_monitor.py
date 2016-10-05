@@ -3,7 +3,7 @@
 from raspberry.gmail_utils import sendEmail
 from raspberry.temperature_utils import getCpuTemperature
 from raspberry.temperature_utils import getGpuTemperature
-import os, sys, configparsers, time, logging
+import os, sys, configparser, time, logging
 
 
 config = configparser.ConfigParser()
