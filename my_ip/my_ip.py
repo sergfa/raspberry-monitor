@@ -3,7 +3,7 @@
 from raspberry.gmail_utils import sendEmail
 from raspberry.ip_utils import getPublicIP
 
-import os, sys, configparser, time, logging
+import os, sys, configparser, time, logging, datetime
 
 
 config = configparser.ConfigParser()
@@ -28,7 +28,8 @@ def getMyPublicIP():
     return ip;
 
 def sendIP(publicIP):
-    text = "Hello,\n\nPublic IP is " + str( publicIP)
+    now =  datetime.datetime.now().strftime("%d %B %Y, %H:%M:%S")
+    text = "Hello,\n\nPublic IP is " + str( publicIP) + "\n\nRaspberry PI time is " + now
     return sendEmail(gmailFromAddr, gmailToAddr, gmailPassword , text , "Raspberry PI IP information",  appMode == "dev")
    
 
