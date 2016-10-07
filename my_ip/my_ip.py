@@ -34,7 +34,7 @@ def sendIP(publicIP):
    
 
    
-def checkIP():
+def doCheckIP():
     global lastPublicIP
     publicIP = None
     try:
@@ -44,19 +44,20 @@ def checkIP():
         return
 		
     logging.debug("Public IP: " + str(publicIP))
-    if(publicIP !=lastPublicIP) :
-        lastPublicIP = publicIP	  
+
+    if(publicIP !=lastPublicIP) :	  
         sent = sendIP(publicIP);
-        msg =  "Email was sent" if sent else "Failed to sent email"	
+        msg =  "Email with new public IP was sent" if sent else "Failed to send email with new public IP, will try to send later..."	
         logging.debug(msg)
+        lastPublicIP = publicIP if sent else None   
     else:
         pass 
 
 def main():	
     time.sleep(60)    
     while True:
-        checkIP()
-        time.sleep(checkInterval)
+       doCheckIP()
+       time.sleep(checkInterval)
 
 try:
     main()
