@@ -6,30 +6,6 @@
 You can easily be notified by email when the GPU or CPU temperature of you Raspberry Pi is too high (for example if it greater than 75 Celsius ).
 #Setup:
 
-First install required packages:
-
-```
-sudo apt-get update
-sudo apt-get install tcpdump iw python-dev python-pip
-```
-
-Update pip:
-
-```
-pip install --upgrade pip
-```
-
-Install current master of scapy:
-
-```
-sudo pip install https://github.com/secdev/scapy/zipball/master
-```
-Install dependencies:
-
-```
-sudo pip install netaddr
-sudo pip install netifaces
-```
 
 Clone project from github
 
