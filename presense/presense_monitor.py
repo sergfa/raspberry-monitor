@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 
 from raspberry.gmail_utils import sendEmail
-from raspberry.presense_utils import readPresenseData
-from raspberry.presense_utils import loadInitialPresenses
+from raspberry.presense_utils import start_monitor
 
 
 import os, configparser, time, logging, sys
@@ -24,16 +23,8 @@ checkInterval = config.getint('PRESENSE_MONITOR', 'checkInterval')
 
 logging.debug("Presense monitor module has been started")
 
-def checkPresense():
-    logging.debug("checking presense")
-
 def main():	    
-    presenseData = loadInitialPresenses();
-    print(presenseData)
-    print(readPresenseData())	
-    while True:
-        checkPresense()
-        time.sleep(checkInterval)
+    start_monitor(checkInterval)
 
 try:
     main()
