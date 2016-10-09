@@ -19,7 +19,7 @@ Install requires libaries:
 ```
 sudo apt-get install arp-scan
 
-python3 -m pip python-telegram-bot
+python3 -m pip install python-telegram-bot
 ```
 
 Create config.cfg file from conf-master.cfg within env directory
