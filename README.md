@@ -14,6 +14,14 @@ git clone https://github.com/sergfa/raspberry-monitor
 
 ```
 
+Install requires libaries:
+
+```
+sudo apt-get install arp-scan
+
+python3 -m pip python-telegram-bot
+```
+
 Create config.cfg file from conf-master.cfg within env directory
 
 Update config.cfg.

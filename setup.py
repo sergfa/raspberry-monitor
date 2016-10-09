@@ -15,6 +15,7 @@ setup(
     install_requires=[
         'netaddr',
         'netifaces',
+        'python-telegram-bot'
     ],
     classifiers=[
     'Environment :: Console',
