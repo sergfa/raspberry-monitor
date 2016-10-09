@@ -1,26 +1,49 @@
 import os, sys, time, logging
 
+state ={"status": "started", "chat_id" : None}
+    
 
-
-def telegram_bot(token, logLevel, commands, logFileName):
+def telegram_bot(token, commands, logging):
     from telegram.ext import Updater
     from telegram.ext import CommandHandler
-    from telegram.ext import MessageHandler, Filters
+    from telegram.ext import MessageHandler, Filters, RegexHandler
     
-    logging.basicConfig(filename=logFileName,level=logLevel, format='%(asctime)s %(message)s')
 
     	
     updater = Updater(token=token)
     dispatcher = updater.dispatcher
     
-    #def start(bot, update):
-    #    bot.sendMessage(chat_id=update.message.chat_id, text="Hi from a bot(/start)!")
+    def save_chat_id(bot, update):
+        state["chat_id"] = update.message.chat_id
+        
+        if(state["status"] == "started"):
+            state["status"] = "enabled"
+        
+    dispatcher.add_handler(RegexHandler('.*', save_chat_id), group=1)
+    
+    def enable(bot, update):
+        state["status"] = "enabled"
+        bot.sendMessage(chat_id=update.message.chat_id, text="Bot is enabled")
 
+    dispatcher.add_handler(CommandHandler("enable",enable))
+    
+    def disable(bot, update):
+        state["status"] = "disabled"
+        bot.sendMessage(chat_id=update.message.chat_id, text="Bot is disabled")
+
+    dispatcher.add_handler(CommandHandler("disable",disable))
+    
+    def status(bot, update):
+        bot.sendMessage(chat_id=update.message.chat_id, text="Bot status is " + state["status"])
+
+    dispatcher.add_handler(CommandHandler("status", status))
+    
     #add error handler
     def error(bot, update, error):
         logging.error('Update "%s" caused error "%s"' % (update, error))
         dispatcher.add_error_handler(error)
-        
+    
+    
     #add all other commands
     for command in commands:
         #name, callback, pass_args
@@ -35,3 +58,6 @@ def telegram_bot(token, logLevel, commands, logFileName):
     
 
     updater.start_polling()
+ 
+def get_telegram_state():
+    return state; 
