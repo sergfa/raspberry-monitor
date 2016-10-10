@@ -29,8 +29,6 @@ gpuThreshold = config.getint('TEMPERATURE_MONITOR', 'gpuThreshold')
 checkInterval = config.getint('TEMPERATURE_MONITOR', 'checkInterval')
 
 telegram_token = config.get('TELEGRAM', 'token')
-bot = telegram.Bot(token=telegram_token)
-
 
 logging.debug("Temperature monitor module has been started")
 
@@ -111,6 +109,8 @@ def main():
     monitor_temperature_thread.start()
     
 try:
+    time.sleep(120)
+    bot = telegram.Bot(token=telegram_token)
     main()
     while 1:
             time.sleep(100)
