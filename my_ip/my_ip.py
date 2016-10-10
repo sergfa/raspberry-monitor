@@ -72,6 +72,10 @@ def exit_clean(signal=None, frame=None):
  
 def main():	
     logger.info("My IP monitoring starting...")
+    
+    #wait few seconds for newtwork
+    time.sleep(120)
+    
     monitor_ip_thread = Thread(name='monitor_ip_thread', target=doCheckIP)
     monitor_ip_thread.daemon = True
     monitor_ip_thread.start()
@@ -81,8 +85,6 @@ def main():
     telegram_bot_thread.daemon =  True
     telegram_bot_thread.start()
     
-    #wait few seconds for newtwork
-    time.sleep(120)
     
     while True:
        #just sleep sometime
