@@ -1,9 +1,9 @@
-import os, sys, time, logging
+import os, sys, time, logging, telegram
 
 state ={"status": "started", "chat_id" : None}
-    
+logger = logging.getLogger('telegram_utils')
 
-def telegram_bot(token, commands, logging):
+def telegram_bot(token, commands):
     from telegram.ext import Updater
     from telegram.ext import CommandHandler
     from telegram.ext import MessageHandler, Filters, RegexHandler
@@ -40,7 +40,7 @@ def telegram_bot(token, commands, logging):
     
     #add error handler
     def error(bot, update, error):
-        logging.error('Update "%s" caused error "%s"' % (update, error))
+        logger.error('Update "%s" caused error "%s"' % (update, error))
         dispatcher.add_error_handler(error)
     
     
@@ -61,3 +61,19 @@ def telegram_bot(token, commands, logging):
  
 def get_telegram_state():
     return state; 
+    
+def telegram_send_message(message, telegram_token):
+    
+    if(state["status"] != "enabled"):
+        logger.info('Cannot send message: "%s" because bot is not enabled' % message)
+        return False
+        
+    try:
+        bot = telegram.Bot(token=telegram_token)
+        bot.sendMessage(chat_id=state["chat_id"], parse_mode='Markdown', text=message, timeout=10)
+    except Exception as e:
+        logger.error('Telegram message failed to send message "%s" with exception: %s' % (message, e))
+    else:
+        logger.debug('Telegram message Sent: "%s"' % message)
+        return True
+ 

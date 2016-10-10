@@ -1,6 +1,8 @@
-import smtplib, sys
+import smtplib, sys, logging
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+
+logger = logging.getLogger('gmail_utils')
 
 def sendEmail(fromAddr, toAddrs, key, body, subject, skipSend):
     msg = MIMEMultipart()
@@ -15,12 +17,12 @@ def sendEmail(fromAddr, toAddrs, key, body, subject, skipSend):
         server.ehlo()
         server.login(fromAddr, key)
         if(skipSend):
-            print(text);
+            logger.debug(text);
         else:
             server.sendmail(fromAddr, toAddrs, text)		
         server.close()
         return True
-    except:  
-        print ("Unexpected error:", sys.exc_info()[0])
+    except Exception as err:  
+        logger.critical ("Failed to send email: {0}".format(err))
         return False
 		
