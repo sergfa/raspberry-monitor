@@ -4,9 +4,6 @@ from raspberry.gmail_utils import sendEmail
 from raspberry.temperature_utils import getCpuTemperature
 from raspberry.temperature_utils import getGpuTemperature
 from raspberry.telegram_utils import telegram_bot
-from raspberry.telegram_utils import get_telegram_state
-from raspberry.telegram_utils import telegram_send_message
-
 
 import os, sys, configparser, time, logging
 from threading import Thread
@@ -31,6 +28,7 @@ gpuThreshold = config.getint('TEMPERATURE_MONITOR', 'gpuThreshold')
 checkInterval = config.getint('TEMPERATURE_MONITOR', 'checkInterval')
 
 telegram_token = config.get('TEMPERATURE_MONITOR', 'telegram-token')
+telegram_bot_password = config.get('TELEGRAM', 'bot-password')
 
 
 def getCpuTemp():
@@ -46,10 +44,7 @@ def getGpuTemp():
 def sendTemprature(cpuTemp, gpuTemp):
     text = "Hello,\nCPU temperature is " \
     + str( cpuTemp) + "\nGPU temperature is " +  str(gpuTemp)
-    if(telegram_send_message(text, telegram_token)):
-        return True
-    else:    
-        return sendEmail(gmailFromAddr, gmailToAddr, gmailPassword , text , "Raspberry PI Temperature Alert",  appMode == "dev")
+    return sendEmail(gmailFromAddr, gmailToAddr, gmailPassword , text , "Raspberry PI Temperature Alert",  appMode == "dev")
    
 
    
@@ -72,21 +67,25 @@ def exit_clean(signal=None, frame=None):
     sys.exit(0)      
         
 
-def bot_get_temperature(bot, update):
+def bot_get_temperature(bot, update, args):
+    if(len(args) < 1):
+        update.message.reply_text('Sorry I can not send you data beacuse password is missing, use command /get <password>')
+        return
+    if(telegram_bot_password != args[0]):
+        update.message.reply_text('Sorry I can not send you data beacuse password is incorrect.')
+        return   
+   
     cpuTemp = getCpuTemp()
     gpuTemp = getGpuTemp()
-    msg = "Current CPU temperature: " + str(cpuTemp) + ", GPU temperature: " + str(gpuTemp)
+    msg = "CPU temperature is: " + str(cpuTemp) + ", GPU temperature is: " + str(gpuTemp)
     bot.sendMessage(chat_id=update.message.chat_id, text=msg)
 
-def bot_get_cpu(bot, update):
-    cpuTemp = getCpuTemp()
-    msg = "Current CPU temperature: " + str(cpuTemp)
-    bot.sendMessage(chat_id=update.message.chat_id, text=msg)
-  
+def bot_start(bot, update):
+    update.message.reply_text('Hi! This is a private bot, you must have password to use it. Use /get <password> to get data')
+    
 
 def main():	
-    logger.info("Temperature monitoring starting...")
-    bot_commands = [("get", bot_get_temperature, False),("cpu", bot_get_cpu, False)]
+    bot_commands = [("get", bot_get_temperature, True),("start", bot_start, False)]
     telegram_bot_thread = Thread(name='telegram_bot', target=telegram_bot, kwargs={'token': telegram_token, 'commands': bot_commands})
     telegram_bot_thread.daemon =  True
     telegram_bot_thread.start()
@@ -96,6 +95,7 @@ def main():
     monitor_temperature_thread.start()
     
 try:
+    logger.info("Temperature monitoring starting...")
     time.sleep(120)
     main()
     while 1:

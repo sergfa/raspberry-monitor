@@ -5,12 +5,7 @@ from raspberry.ip_utils import getPublicIP
 
 import os, sys, configparser, time, logging, datetime
 from threading import Thread
-
 from raspberry.telegram_utils import telegram_bot
-from raspberry.telegram_utils import telegram_send_message
-
-
-import telegram
 
 
 config = configparser.ConfigParser()
@@ -28,6 +23,7 @@ gmailToAddr = config.get('gmail', 'toAddrs')
 appMode = config.get('env', 'mode')
 checkInterval = config.getint('IP_MONITOR', 'checkInterval')
 telegram_token = config.get('IP_MONITOR', 'telegram-token')
+telegram_bot_password = config.get('TELEGRAM', 'bot-password')
 
 
 def getMyPublicIP():
@@ -37,20 +33,26 @@ def getMyPublicIP():
 def sendIP(publicIP):
     now =  datetime.datetime.now().strftime("%d %B %Y, %H:%M:%S")
     text = "Hello,\nPublic IP is " + str( publicIP) + "\nRaspberry PI time is " + now
-    if(telegram_send_message(text, telegram_token)):
-        return True
-    else:
-        return sendEmail(gmailFromAddr, gmailToAddr, gmailPassword , text , "Raspberry PI IP information",  appMode == "dev")
+    return sendEmail(gmailFromAddr, gmailToAddr, gmailPassword , text , "Raspberry PI IP information",  appMode == "dev")
    
 
-def bot_get_ip(bot, update):
+def bot_get_ip(bot, update, args):
+    if(len(args) < 1):
+        update.message.reply_text('Sorry I can not send you data beacuse password is missing, use command /get <password>')
+        return
+    if(telegram_bot_password != args[0]):
+        update.message.reply_text('Sorry I can not send you data beacuse password is incorrect.')
+        return   
     try:
         ip = getMyPublicIP()
-        msg = "My public IP is: " + str(ip)
+        msg = "Public IP is: " + str(ip)
         bot.sendMessage(chat_id=update.message.chat_id, text=msg)
     except Exception as err:
          logger.critical("Failed to get public IP: {0}".format(err))
-   
+ 
+def bot_start(bot, update):
+    update.message.reply_text('Hi! This is a private bot, you must have password to use it. Use /get <password> to get data')
+ 
 def doCheckIP():
     lastPublicIP = None
     while True:
@@ -71,27 +73,24 @@ def exit_clean(signal=None, frame=None):
     sys.exit(0)      
  
 def main():	
-    logger.info("My IP monitoring starting...")
-    
-    #wait few seconds for newtwork
-    time.sleep(120)
-    
     monitor_ip_thread = Thread(name='monitor_ip_thread', target=doCheckIP)
     monitor_ip_thread.daemon = True
     monitor_ip_thread.start()
    
-    bot_commands = [("get", bot_get_ip, False)]
+    bot_commands = [("get", bot_get_ip, True), ("start", bot_start, False)]
     telegram_bot_thread = Thread(name='telegram_bot', target=telegram_bot, kwargs={'token': telegram_token, 'commands': bot_commands})
     telegram_bot_thread.daemon =  True
     telegram_bot_thread.start()
-    
-    
-    while True:
-       #just sleep sometime
-       time.sleep(60)
 
 try:
+    logger.info("My IP monitoring starting...")
+    #wait few seconds for newtwork
+    time.sleep(120)
     main()
+    while True:
+       #just sleep sometimes...
+       time.sleep(60)
+
 except KeyboardInterrupt:
     exit_clean()
 		
