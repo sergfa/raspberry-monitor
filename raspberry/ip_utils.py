@@ -1,5 +1,7 @@
 import subprocess, sys, socket, os, logging
 
+REMOTE_SERVER = "www.google.com"
+
 logger = logging.getLogger('ip_utils')
 
 def checkIp(ip):
@@ -17,4 +19,16 @@ def getPublicIP():
         checkIp(output)
     return output;
 
+def is_connected():
+  try:
+    # see if we can resolve the host name -- tells us if there is
+    # a DNS listening
+    host = socket.gethostbyname(REMOTE_SERVER)
+    # connect to the host -- tells us if the host is actually
+    # reachable
+    s = socket.create_connection((host, 80), 2)
+    return True
+  except:
+     pass
+  return False
 

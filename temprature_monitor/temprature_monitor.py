@@ -4,6 +4,10 @@ from raspberry.gmail_utils import sendEmail
 from raspberry.temperature_utils import getCpuTemperature
 from raspberry.temperature_utils import getGpuTemperature
 from raspberry.telegram_utils import telegram_bot
+from raspberry.telegram_utils import is_logged_in
+from raspberry.ip_utils import is_connected
+
+
 
 import os, sys, configparser, time, logging
 from threading import Thread
@@ -67,26 +71,24 @@ def exit_clean(signal=None, frame=None):
     sys.exit(0)      
         
 
-def bot_get_temperature(bot, update, args):
-    if(len(args) < 1):
-        update.message.reply_text('Sorry I can not send you data beacuse password is missing, use command /get <password>')
+def bot_get_temperature(bot, update):
+    if(is_logged_in(bot, update) == False):
         return
-    if(telegram_bot_password != args[0]):
-        update.message.reply_text('Sorry I can not send you data beacuse password is incorrect.')
-        return   
-   
     cpuTemp = getCpuTemp()
     gpuTemp = getGpuTemp()
     msg = "CPU temperature is: " + str(cpuTemp) + ", GPU temperature is: " + str(gpuTemp)
     bot.sendMessage(chat_id=update.message.chat_id, text=msg)
 
-def bot_start(bot, update):
-    update.message.reply_text('Hi! This is a private bot, you must have password to use it. Use /get <password> to get data')
+def bot_help(bot, update):
+    if(is_logged_in(bot, update) == False):
+        return
+    msg = "Use command /get to recieve the temperature of the Raspberry PI"
+    bot.sendMessage(chat_id=update.message.chat_id, text=msg)
     
 
 def main():	
-    bot_commands = [("get", bot_get_temperature, True),("start", bot_start, False)]
-    telegram_bot_thread = Thread(name='telegram_bot', target=telegram_bot, kwargs={'token': telegram_token, 'commands': bot_commands})
+    bot_commands = [("get", bot_get_temperature, False),("help", bot_help, False)]
+    telegram_bot_thread = Thread(name='telegram_bot', target=telegram_bot, kwargs={'token': telegram_token, 'commands': bot_commands, 'passw' : telegram_bot_password})
     telegram_bot_thread.daemon =  True
     telegram_bot_thread.start()
     
@@ -95,9 +97,12 @@ def main():
     monitor_temperature_thread.start()
     
 try:
-    logger.info("Temperature monitoring starting...")
-    time.sleep(120)
+    logger.info("Temperature monitoring is starting...")
+    #check if network is up, otherwise sleep a bit and check it again
+    while (is_connected() == False):
+        time.sleep(60)
     main()
+    logger.info("Temperature monitoring is started")
     while 1:
             time.sleep(100)
 except KeyboardInterrupt:
