@@ -3,3 +3,5 @@ dist/
 *.pyc
 logs/*.log
 env/config.cfg
+env/presense.txt
+
