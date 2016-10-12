@@ -6,6 +6,8 @@ from raspberry.temperature import bot_get_temperature
 from raspberry.temperature import checkTemp
 from raspberry.ip import checkIP
 from raspberry.ip import bot_get_ip
+from raspberry.presense import bot_get_presense
+from raspberry.presense import start_presense_monitor
 
 
 
@@ -34,12 +36,12 @@ def exit_clean(signal=None, frame=None):
 def bot_help(bot, update):
     if(is_logged_in(bot, update) == False):
         return
-    msg = "Use commands /ip /temperature to recieve information from the Bot"
+    msg = "Use commands /ip, /temperature, /presense to recieve information from the Bot"
     bot.sendMessage(chat_id=update.message.chat_id, text=msg)
     
 
 def main():	
-    bot_commands = [("ip", bot_get_ip, False),("temperature", bot_get_temperature, False),("help", bot_help, False)]
+    bot_commands = [("presense", bot_get_presense, False), ("ip", bot_get_ip, False),("temperature", bot_get_temperature, False),("help", bot_help, False)]
     telegram_bot_thread = Thread(name='telegram_bot', target=telegram_bot, kwargs={'token': telegram_token, 'commands': bot_commands, 'passw' : telegram_bot_password})
     telegram_bot_thread.daemon =  True
     telegram_bot_thread.start()
@@ -53,6 +55,8 @@ def main():
         monitor_ip_thread = Thread(name='monitor_ip', target=checkIP, kwargs={'config': config})
         monitor_ip_thread.daemon = True
         monitor_ip_thread.start()
+    
+    start_presense_monitor(config.getint('PRESENSE_MONITOR', 'device_disconnected_time'))
     
 try:
     logger.info("RPI monitoring is starting...")
