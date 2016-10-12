@@ -1,10 +1,10 @@
 import  subprocess, sys, os, socket, time
 
 
-def loadInitialPresenses():
+def loadInitialPresences():
     data = {}
-    presenseFilename = os.path.join(os.path.abspath(os.path.dirname(__file__)), '../env', 'presense.txt')
-    with open(presenseFilename, "r") as lines:
+    presenceFilename = os.path.join(os.path.abspath(os.path.dirname(__file__)), '../env', 'presence.txt')
+    with open(presenceFilename, "r") as lines:
         for line in lines:
             line = line.rstrip()
             person = line.split(None, 1);
@@ -21,23 +21,23 @@ def checkIp(ip):
 
 
 
-def monitor_device_state(presense_data, timeout):
+def monitor_device_state(presence_data, timeout):
     def update_device_state(presense, new_state):
         if(presense['status'] != new_state):
             presense['status'] = new_state
 
     while True:
-        time.sleep(3)
+        time.sleep(30)
         now = time.time()
-        for mac_address in presense_data:
-            if now - presense_data[mac_address]['last_seen'] > timeout:
-                update_device_state(presense_data[mac_address], 'offline')
+        for mac_address in presence_data:
+            if now - presence_data[mac_address]['last_seen'] > timeout:
+                update_device_state(presence_data[mac_address], 'offline')
             else:
-                update_device_state(presense_data[mac_address], 'online')
+                update_device_state(presence_data[mac_address], 'online')
 
      
-def arp_scan(presense_data):
-    def readPresenseData():
+def arp_scan(presence_data):
+    def readPresenceData():
         data = {}
         output = subprocess.check_output("sudo arp-scan -l", shell=True).decode("ascii");
         lines = output.split('\n')
@@ -49,9 +49,9 @@ def arp_scan(presense_data):
         return data;
 	
     while True:
-        time.sleep(5)
-        onlineDevices = readPresenseData()
+        time.sleep(45)
+        onlineDevices = readPresenceData()
         now = time.time()
         for device_mac in onlineDevices:
-            if(device_mac in presense_data):
-                presense_data[device_mac]["last_seen"] = now 
+            if(device_mac in presence_data):
+                presence_data[device_mac]["last_seen"] = now 
