@@ -26,11 +26,11 @@ def monitor_device_state(presence_data, timeout, beaconQueue):
     def update_device_state(presense, new_state):
         if(presense['status'] != new_state):
             presense['status'] = new_state
-            beacon = Beacon(Beacon.TYPE_PRESENSE(presense['device']),  presense['status'] == 'online', time.time() )
-            beaconQueue.put(beacon)
+        beacon = Beacon(Beacon.TYPE_PRESENSE(presense['device']),  presense['status'], time.time())
+        beaconQueue.put(beacon)
     
     while True:
-        time.sleep(30)
+        time.sleep(60)
         now = time.time()
         for mac_address in presence_data:
             if now - presence_data[mac_address]['last_seen'] > timeout:
@@ -52,7 +52,7 @@ def arp_scan(presence_data):
         return data;
 	
     while True:
-        time.sleep(45)
+        time.sleep(30)
         onlineDevices = readPresenceData()
         now = time.time()
         for device_mac in onlineDevices:

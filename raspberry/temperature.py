@@ -19,7 +19,7 @@ def putBeacon(type,cpuTemp, beaconQueue):
     beacon = Beacon(type, cpuTemp, time.time() )
     beaconQueue.put(beacon)
        
-def checkTemp(beaconQueue):
+def checkTemp(beaconQueue, checkInterval):
     
     while True:
         cpuTemp = getCpuTemp()

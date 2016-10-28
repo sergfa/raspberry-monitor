@@ -2,22 +2,22 @@
 
 class Beacon:
     def __init__(self, metric_type, metric_value, timestamp):
-         self.metric_type = metric_type
-         self.metric_value = metric_value
-         self.timestamp = timestamp
+         self._type = metric_type
+         self._value = metric_value
+         self._timestamp = timestamp
      
        
     @property
     def type(self):
-        return self.metric_type
+        return self._type
     
     @property
     def value(self):
-        return self.metric_value
+        return self._value
     
     @property
     def timestamp(self):
-        return self.timestamp
+        return self._timestamp
         
     def TYPE_CPU_TEMPERATURE():
         return "rpi-cpu-temperature"

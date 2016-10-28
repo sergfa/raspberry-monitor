@@ -42,10 +42,10 @@ def bot_help(bot, update):
     
 def check_beacon_queue(config, beaconQueue):
     while True:
-        if not beaconQueue.empty():
+        while not beaconQueue.empty():
             item = beaconQueue.get()
-            print(item)
-        time.sleep(100)    
+            print("Type {0}, value {1}".format(item.type,item.value))
+        time.sleep(5)    
             
 def main():	
     beaconQueue = queue.Queue()
@@ -56,7 +56,8 @@ def main():
         telegram_bot_thread.start()
     
     if (config.getboolean('TEMPERATURE_MONITOR', 'enable') ):
-        monitor_temp_thread = Thread(name='monitor_temp', target=checkTemp, kwargs={'config': config})
+        tempCheckInterval = config.getint('TEMPERATURE_MONITOR', 'checkInterval')
+        monitor_temp_thread = Thread(name='monitor_temp', target=checkTemp, kwargs={'beaconQueue': beaconQueue, "checkInterval" : tempCheckInterval})
         monitor_temp_thread.daemon = True
         monitor_temp_thread.start()
     
@@ -66,9 +67,11 @@ def main():
         monitor_ip_thread.start()
     
     if (config.getboolean('PRESENCE_MONITOR', 'enable')):
-        check_beacon_queue_thread = Thread(name='check_beacon_queue', target=check_beacon_queue, kwargs={'config': config, 'beaconQueue': beaconQueue})
-        check_beacon_queue_thread.daemon = True
-        check_beacon_queue_thread.start()
+         start_presence_monitor(config.getint('PRESENCE_MONITOR', 'device_disconnected_time'), beaconQueue)
+         
+    check_beacon_queue_thread = Thread(name='check_beacon_queue', target=check_beacon_queue, kwargs={'config': config, 'beaconQueue': beaconQueue})
+    check_beacon_queue_thread.daemon = True
+    check_beacon_queue_thread.start()
     
     
 try:
