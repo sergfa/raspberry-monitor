@@ -1,4 +1,5 @@
 import  subprocess, sys, os, socket, time
+from raspberry.beacon import Beacon
 
 
 def loadInitialPresences():
@@ -21,11 +22,13 @@ def checkIp(ip):
 
 
 
-def monitor_device_state(presence_data, timeout):
+def monitor_device_state(presence_data, timeout, beaconQueue):
     def update_device_state(presense, new_state):
         if(presense['status'] != new_state):
             presense['status'] = new_state
-
+            beacon = Beacon(Beacon.TYPE_PRESENSE(presense['device']),  presense['status'] == 'online', time.time() )
+            beaconQueue.put(beacon)
+    
     while True:
         time.sleep(30)
         now = time.time()

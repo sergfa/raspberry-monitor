@@ -22,13 +22,13 @@ def bot_get_presence(bot, update):
          logger.critical("Failed to get presence data: {0}".format(err))
 
 
-def start_presence_monitor(timeout):
+def start_presence_monitor(timeout, config):
     
     from threading import Thread
     global presence_data
     presence_data = loadInitialPresences()
     
-    monitor_device_state_thread = Thread(name='monitor_device_state', target=monitor_device_state, kwargs={"presence_data" : presence_data, "timeout":timeout})
+    monitor_device_state_thread = Thread(name='monitor_device_state', target=monitor_device_state, kwargs={"presence_data" : presence_data, "timeout":timeout, "config": config})
     monitor_device_state_thread.daemon = True
     monitor_device_state_thread.start()
     

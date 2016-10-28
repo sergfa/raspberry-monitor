@@ -8,11 +8,12 @@ from raspberry.ip import checkIP
 from raspberry.ip import bot_get_ip
 from raspberry.presence import bot_get_presence
 from raspberry.presence import start_presence_monitor
+from raspberry.openhab_rest import OpenhabRestHelper
 
 
 
 from threading import Thread
-import os, sys, configparser, time, logging
+import os, sys, configparser, time, logging, queue
 
 
 config = configparser.ConfigParser()
@@ -39,28 +40,40 @@ def bot_help(bot, update):
     msg = "Use commands /ip, /temperature, /presense to recieve information from the Bot"
     bot.sendMessage(chat_id=update.message.chat_id, text=msg)
     
-
+def check_beacon_queue(config, beaconQueue):
+    while True:
+        if not beaconQueue.empty():
+            item = beaconQueue.get()
+            print(item)
+        time.sleep(100)    
+            
 def main():	
-    bot_commands = [("presence", bot_get_presence, False), ("ip", bot_get_ip, False),("temperature", bot_get_temperature, False),("help", bot_help, False)]
-    telegram_bot_thread = Thread(name='telegram_bot', target=telegram_bot, kwargs={'token': telegram_token, 'commands': bot_commands, 'passw' : telegram_bot_password})
-    telegram_bot_thread.daemon =  True
-    telegram_bot_thread.start()
+    beaconQueue = queue.Queue()
+    if (config.getboolean('TELEGRAM', 'enable')):
+        bot_commands = [("presence", bot_get_presence, False), ("ip", bot_get_ip, False),("temperature", bot_get_temperature, False),("help", bot_help, False)]
+        telegram_bot_thread = Thread(name='telegram_bot', target=telegram_bot, kwargs={'token': telegram_token, 'commands': bot_commands, 'passw' : telegram_bot_password})
+        telegram_bot_thread.daemon =  True
+        telegram_bot_thread.start()
     
-    if (config.getint('TEMPERATURE_MONITOR', 'enable') == 1):
+    if (config.getboolean('TEMPERATURE_MONITOR', 'enable') ):
         monitor_temp_thread = Thread(name='monitor_temp', target=checkTemp, kwargs={'config': config})
         monitor_temp_thread.daemon = True
         monitor_temp_thread.start()
     
-    if (config.getint('IP_MONITOR', 'enable') == 1):
-        monitor_ip_thread = Thread(name='monitor_ip', target=checkIP, kwargs={'config': config})
+    if (config.getboolean('IP_MONITOR', 'enable')):
+        monitor_ip_thread = Thread(name='monitor_ip', target=checkIP, kwargs={'config': config, 'beaconQueue': beaconQueue})
         monitor_ip_thread.daemon = True
         monitor_ip_thread.start()
     
-    start_presence_monitor(config.getint('PRESENCE_MONITOR', 'device_disconnected_time'))
+    if (config.getboolean('PRESENCE_MONITOR', 'enable')):
+        check_beacon_queue_thread = Thread(name='check_beacon_queue', target=check_beacon_queue, kwargs={'config': config, 'beaconQueue': beaconQueue})
+        check_beacon_queue_thread.daemon = True
+        check_beacon_queue_thread.start()
+    
     
 try:
     logger.info("RPI monitoring is starting...")
-    #check if network is up, otherwise sleep a bit and check it again
+    #checks if network is up, otherwise sleeps a bit and checks it again
     while (is_connected() == False):
         time.sleep(60)
     main()
