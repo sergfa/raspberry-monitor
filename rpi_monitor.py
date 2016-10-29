@@ -8,7 +8,7 @@ from raspberry.ip import checkIP
 from raspberry.ip import bot_get_ip
 from raspberry.presence import bot_get_presence
 from raspberry.presence import start_presence_monitor
-from raspberry.openhab_rest import OpenhabRestHelper
+from raspberry.openhab_sender import OpenhabSender
 
 
 
@@ -41,10 +41,16 @@ def bot_help(bot, update):
     bot.sendMessage(chat_id=update.message.chat_id, text=msg)
     
 def check_beacon_queue(config, beaconQueue):
+    openhabSender = OpenhabSender(config)
     while True:
         while not beaconQueue.empty():
             item = beaconQueue.get()
-            print("Type {0}, value {1}".format(item.type,item.value))
+            logging.debug("Type {0}, {1} = {2}".format(item.type, item.key, item.value))
+            if(config.getboolean(item.type, 'openhab')):
+                try:
+                    openhabSender.send(item)
+                except Exception as err:
+                     logger.error("Failed to send beacon to openhab {0}".format(err))                 
         time.sleep(5)    
             
 def main():	

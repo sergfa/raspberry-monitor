@@ -1,5 +1,8 @@
 
 import requests, base64
+import json, logging
+
+logger = logging.getLogger('openhab-rest')
 
 class OpenhabRestHelper:
 
@@ -20,8 +23,10 @@ class OpenhabRestHelper:
             
     def put_status(self, key, value):
        """ Put a status update to OpenHAB  key is item, value is state """
+       payload = str(value)
        url = 'http://%s:%s/rest/items/%s/state'%(self.openhab_host, self.openhab_port, key)
-       req = requests.put(url, data=value, headers=self.basic_header())
+       logger.debug(url)
+       req = requests.put(url, data=payload, headers=self.basic_header())
        if req.status_code != requests.codes.ok:
            req.raise_for_status()
            

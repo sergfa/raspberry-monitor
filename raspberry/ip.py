@@ -12,8 +12,8 @@ def getMyPublicIP():
     ip = getPublicIP()
     return ip;
 
-def putBeacon(type,ip, beaconQueue):
-    beacon = Beacon(type, ip, time.time() )
+def putBeacon(key, type,ip, beaconQueue):
+    beacon = Beacon(key, type, ip, time.time() )
     beaconQueue.put(beacon)
 
 def sendIP(publicIP, config, beaconQueue):
@@ -50,7 +50,7 @@ def checkIP(config, beaconQueue):
     while True:
         try:
             publicIP = getMyPublicIP()
-            putBeacon(Beacon.TYPE_PUBLIC_IP(), publicIP, beaconQueue)
+            putBeacon(Beacon.KEY_PUBLIC_IP(), Beacon.TYPE_PUBLIC_IP(), publicIP, beaconQueue)
         except Exception as err: 
             logger.critical("Failed to get public ip : {0}", format(err))
         time.sleep(checkInterval)            

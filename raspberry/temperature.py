@@ -15,8 +15,8 @@ def getGpuTemp():
     temp = getGpuTemperature()
     return temp
 
-def putBeacon(type,cpuTemp, beaconQueue):
-    beacon = Beacon(type, cpuTemp, time.time() )
+def putBeacon(key, type,cpuTemp, beaconQueue):
+    beacon = Beacon(key, type, cpuTemp, time.time() )
     beaconQueue.put(beacon)
        
 def checkTemp(beaconQueue, checkInterval):
@@ -25,8 +25,8 @@ def checkTemp(beaconQueue, checkInterval):
         cpuTemp = getCpuTemp()
         gpuTemp = getGpuTemp()
         logger.debug("Current CPU temperature: " + str(cpuTemp) + ", GPU temperature: " + str(gpuTemp))
-        putBeacon(Beacon.TYPE_CPU_TEMPERATURE(), cpuTemp, beaconQueue);
-        putBeacon(Beacon.TYPE_GPU_TEMPERATURE(), gpuTemp, beaconQueue);
+        putBeacon(Beacon.KEY_CPU_TEMPERATURE(), Beacon.TYPE_TEMPERATURE(), cpuTemp, beaconQueue);
+        putBeacon(Beacon.KEY_GPU_TEMPERATURE(), Beacon.TYPE_TEMPERATURE(), gpuTemp, beaconQueue);
         time.sleep(checkInterval)    
         
 def bot_get_temperature(bot, update):

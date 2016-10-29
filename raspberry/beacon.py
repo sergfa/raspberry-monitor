@@ -1,12 +1,17 @@
 
 
 class Beacon:
-    def __init__(self, metric_type, metric_value, timestamp):
+    def __init__(self, metric_key, metric_type, metric_value, timestamp):
+         self._key = metric_key     
          self._type = metric_type
          self._value = metric_value
          self._timestamp = timestamp
      
-       
+    @property
+    def key(self):
+        return self._key
+        
+    
     @property
     def type(self):
         return self._type
@@ -18,17 +23,28 @@ class Beacon:
     @property
     def timestamp(self):
         return self._timestamp
-        
-    def TYPE_CPU_TEMPERATURE():
-        return "rpi-cpu-temperature"
     
-    def TYPE_GPU_TEMPERATURE():
-        return "rpi-gpu-temperature"
         
+    def KEY_CPU_TEMPERATURE():
+        return "RpiCpuTemperature"
+    
+    def KEY_GPU_TEMPERATURE():
+        return "RpiGpuTemperature"
+        
+    def KEY_PRESENSE(id):
+        return "DevicePresense" + id
+    
+    def KEY_PUBLIC_IP():
+        return "RpiPublicIp"
+    
+    def TYPE_TEMPERATURE():
+        return "TEMPERATURE_MONITOR"
+
     def TYPE_PUBLIC_IP():
-        return "rpi-public-ip"
+        return "IP_MONITOR"
     
-    def TYPE_PRESENSE(id):
-        return "device-presense-" + id
+    def TYPE_PRESENSE():
+        return "PRESENCE_MONITOR"
+        
         
     
