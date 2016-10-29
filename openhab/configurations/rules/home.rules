@@ -1,0 +1,11 @@
+import org.openhab.core.library.types.*
+import org.openhab.core.persistence.*
+import org.openhab.model.script.actions.*
+
+// Creates an item that stores the last update time of this item
+rule "Records last public ip update time"
+when
+  Item RpiPublicIp received update
+then
+  postUpdate(RpiPublicIp_LastUpdate, new DateTimeType())
+end

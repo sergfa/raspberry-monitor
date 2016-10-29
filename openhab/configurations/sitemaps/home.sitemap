@@ -1,0 +1,7 @@
+sitemap home label="My Home"
+{
+
+ Frame {
+  Group item=Server label="Server Information" icon="chart"
+ } 
+}
