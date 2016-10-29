@@ -37,6 +37,15 @@ class Beacon:
     def KEY_PUBLIC_IP():
         return "RpiPublicIp"
     
+    def KEY_SENSE_HAT_TEMP():
+        return "SenseHatTemperature"
+    
+    def KEY_SENSE_HAT_PRESSURE():
+        return "SenseHatPressure"
+    
+    def KEY_SENSE_HAT_HUMIDITY():
+        return "SenseHatHumidity"
+        
     def TYPE_TEMPERATURE():
         return "TEMPERATURE_MONITOR"
 
@@ -45,6 +54,9 @@ class Beacon:
     
     def TYPE_PRESENSE():
         return "PRESENCE_MONITOR"
-        
+   
+    def TYPE_SENSE_HAT():
+        return "SENSE_HAT"
+      
         
     
