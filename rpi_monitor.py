@@ -9,6 +9,7 @@ from raspberry.ip import bot_get_ip
 from raspberry.presence import bot_get_presence
 from raspberry.presence import start_presence_monitor
 from raspberry.openhab_sender import OpenhabSender
+from raspberry.sense_hat_monitor import SenseHatMonitor
 
 
 
@@ -74,6 +75,11 @@ def main():
     
     if (config.getboolean('PRESENCE_MONITOR', 'enable')):
          start_presence_monitor(config.getint('PRESENCE_MONITOR', 'device_disconnected_time'), beaconQueue)
+    
+    if (config.getboolean('SENSE_HAT_MONITOR', 'enable')):
+         sense_hat_monitor = SenseHatMonitor(beaconQueue, config.getint('SENSE_HAT_MONITOR', 'checkInterval'))
+         sense_hat_monitor.start_monitor()
+    
          
     check_beacon_queue_thread = Thread(name='check_beacon_queue', target=check_beacon_queue, kwargs={'config': config, 'beaconQueue': beaconQueue})
     check_beacon_queue_thread.daemon = True

@@ -1,11 +1,12 @@
 Group Server
 
-
 Number RpiCpuTemperature "CPU Temperature [%.1f °C]" <temperature> (Server)
-
 Number RpiGpuTemperature "GPU Temperature [%.1f °C]" <temperature> (Server)
-
 String RpiPublicIp "Public IP [%s]" <network> (Server)
-
 DateTime RpiPublicIp_LastUpdate	"Last Public IP Update [%1$ta %1$tR, %1$td.%1$tm.%1$tY]" <clock> (Server)
 
+
+Number SenseHatTemperature 		"SenseHat Temperature [%.1f °C]"	<temperature> (Server)
+Number SenseHatHumidity 		"SenseHat Humidity [%.1f %%]"	<temperature> (Server)
+Number SenseHatPressure 		"SenseHat Pressure [%.1f %%]"	<temperature> (Server)
+DateTime SenseHat_LastUpdate	"Last SenseHat Update [%1$ta %1$tR, %1$td.%1$tm.%1$tY]" <clock> (Server)

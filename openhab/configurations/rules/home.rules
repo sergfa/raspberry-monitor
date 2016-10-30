@@ -9,3 +9,11 @@ when
 then
   postUpdate(RpiPublicIp_LastUpdate, new DateTimeType())
 end
+
+// Creates an item that stores the last update time of this item
+rule "Records last SenseHat update time"
+when
+  Item SenseHatTemperature received update
+then
+  postUpdate(SenseHat_LastUpdate, new DateTimeType())
+end
