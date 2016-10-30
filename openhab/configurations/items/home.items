@@ -7,6 +7,6 @@ DateTime RpiPublicIp_LastUpdate	"Last Public IP Update [%1$ta %1$tR, %1$td.%1$tm
 
 
 Number SenseHatTemperature 		"SenseHat Temperature [%.1f °C]"	<temperature> (Server)
-Number SenseHatHumidity 		"SenseHat Humidity [%.1f %%]"	<temperature> (Server)
-Number SenseHatPressure 		"SenseHat Pressure [%.1f %%]"	<temperature> (Server)
+Number SenseHatHumidity 		"SenseHat Humidity [%.1f %%]"	<humidity> (Server)
+Number SenseHatPressure 		"SenseHat Pressure [%.1f]"	<pressure> (Server)
 DateTime SenseHat_LastUpdate	"Last SenseHat Update [%1$ta %1$tR, %1$td.%1$tm.%1$tY]" <clock> (Server)

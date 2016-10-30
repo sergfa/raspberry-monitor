@@ -56,7 +56,7 @@ class Beacon:
         return "PRESENCE_MONITOR"
    
     def TYPE_SENSE_HAT():
-        return "SENSE_HAT"
+        return "SENSE_HAT_MONITOR"
       
         
     
