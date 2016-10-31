@@ -5,9 +5,11 @@ sitemap home label="My Home"
   Group item=Server label="Server Information" icon="chart"
  } 
  
- Frame {
-  Group item=Network label="Network" icon="chart"
+ 
+  Frame {
+  Group item=Device label="Devices" icon="chart"
  } 
+ 
  
 
 }
