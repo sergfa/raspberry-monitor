@@ -26,11 +26,11 @@ def monitor_device_state(presence_data, timeout, beaconQueue):
     def update_device_state(presense, new_state):
         if(presense['status'] != new_state):
             presense['status'] = new_state
-        beacon = Beacon(Beacon.KEY_PRESENSE(presense['device']),Beacon.TYPE_PRESENSE(),  presense['status'], time.time())
-        beaconQueue.put(beacon)
+            beacon = Beacon(Beacon.KEY_PRESENSE(presense['device']),Beacon.TYPE_PRESENSE(),  presense['status'], time.time())
+            beaconQueue.put(beacon)
     
     while True:
-        time.sleep(60)
+        time.sleep(15)
         now = time.time()
         for mac_address in presence_data:
             if now - presence_data[mac_address]['last_seen'] > timeout:

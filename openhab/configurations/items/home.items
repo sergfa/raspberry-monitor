@@ -1,4 +1,6 @@
 Group Server
+Group Device
+
 
 Number RpiCpuTemperature "CPU Temperature [%.1f °C]" <temperature> (Server)
 Number RpiGpuTemperature "GPU Temperature [%.1f °C]" <temperature> (Server)
@@ -10,3 +12,11 @@ Number SenseHatTemperature 		"SenseHat Temperature [%.1f °C]"	<temperature> (Se
 Number SenseHatHumidity 		"SenseHat Humidity [%.1f %%]"	<humidity> (Server)
 Number SenseHatPressure 		"SenseHat Pressure [%.1f]"	<pressure> (Server)
 DateTime SenseHat_LastUpdate	"Last SenseHat Update [%1$ta %1$tR, %1$td.%1$tm.%1$tY]" <clock> (Server)
+
+
+String DevicePresenseInaSamsung6 "Ina Samsung 6 [%s]" <network> (Device)
+String DevicePresenseEmiSamsung6 "Emi Samsung 6 [%s]" <network> (Device)
+String DevicePresenseNirLG4 "Nir LG 4 [%s]" <network> (Device)
+String DevicePresenseSergeyHTC8 "Sergey HTC 8 [%s]" <network> (Device)
+
+
