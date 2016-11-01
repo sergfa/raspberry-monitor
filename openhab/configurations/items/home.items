@@ -1,9 +1,10 @@
 Group Server
 Group Device
 Group OutsideWeatherOWM
-Group OutsideWeatherOWM
+Group OutsideWeatherFIO
 
-FIO
+DateTime		Date			"Date [%1$tA, %1$td.%1$tm.%1$tY]"	<calendar>	{ ntp="Europe/Berlin:de_DE" }
+
 Number RpiCpuTemperature "CPU Temperature [%.1f °C]" <temperature> (Server)
 Number RpiGpuTemperature "GPU Temperature [%.1f °C]" <temperature> (Server)
 String RpiPublicIp "Public IP [%s]" <network> (Server)
@@ -22,17 +23,23 @@ String DevicePresenseNirLG4 "Nir LG 4 [%s]" <network> (Device)
 String DevicePresenseSergeyHTC8 "Sergey HTC 8 [%s]" <network> (Device)
 
 
-Number   Temperature_OWM      "Temperature [%.2f °C]"       {weather="locationId=home-OWM, type=temperature, property=current"} (OutsideWeatherOWM)
-Number   Pressure_OWM         "Pressure [%.2f mb]"    {weather="locationId=home-OWM, type=atmosphere, property=pressure"} (OutsideWeatherOWM)
-Number   Humidity_OWM         "Humidity [%d %%]"      {weather="locationId=home-OWM, type=atmosphere, property=humidity"}
-Number   Clouds_OWM   "Clouds [%.0f %%]"   {weather="locationId=home-OWM, type=clouds, property=percent"} (OutsideWeatherOWM)
-Number   Rain_OWM          "Rain [%.2f mm/h]"   {weather="locationId=home-OWM, type=precipitation, property=rain"} (OutsideWeatherOWM)
-Number   Wind_Speed_OWM           "Windspeed [%.2f km/h]"    {weather="locationId=home-OWM, type=wind, property=speed"} (OutsideWeatherOWM)
+Number   Temperature_OWM      "Outside Temperature by OWM[%.2f °C]" <temperature> (OutsideWeatherOWM)      {weather="locationId=OWM, type=temperature, property=current"} 
 
-Number   Temperature_FIO      "Temperature [%.2f °C]"       {weather="locationId=home-FIO, type=temperature, property=current"} (OutsideWeatherOWM)
-Number   Pressure_FIO         "Pressure [%.2f mb]"    {weather="locationId=home-FIO, type=atmosphere, property=pressure"} (OutsideWeatherOWM)
-Number   Humidity_FIO         "Humidity [%d %%]"      {weather="locationId=home-FIO, type=atmosphere, property=humidity"}
-Number   Clouds_FIO   "Clouds [%.0f %%]"   {weather="locationId=home-FIO, type=clouds, property=percent"} (OutsideWeatherOWM)
-Number   Rain_FIO          "Rain [%.2f mm/h]"   {weather="locationId=home-FIO, type=precipitation, property=rain"} (OutsideWeatherOWM)
-Number   Wind_Speed_FIO           "Windspeed [%.2f km/h]"    {weather="locationId=home-FIO, type=wind, property=speed"} (OutsideWeatherOWM)
+Number   Pressure_OWM         "Pressure [%.2f mb]" (OutsideWeatherOWM)  {weather="locationId=OWM, type=atmosphere, property=pressure"} 
+
+Number   Humidity_OWM         "Humidity [%d %%]"  (OutsideWeatherOWM)    {weather="locationId=OWM, type=atmosphere, property=humidity"}
+
+Number   Rain_OWM          "Rain [%.2f mm/h]" (OutsideWeatherOWM)  {weather="locationId=OWM, type=precipitation, property=rain"}
+
+Number   Wind_Speed_OWM           "Windspeed [%.2f km/h]" (OutsideWeatherOWM)   {weather="locationId=OWM, type=wind, property=speed"}
+
+Number   Temperature_FIO "Outside Temperature by FIO [%.2f °C]"  <temperature> (OutsideWeatherFIO)     {weather="locationId=FIO, type=temperature, property=current"}
+
+Number   Pressure_FIO         "Pressure [%.2f mb]"  (OutsideWeatherFIO)  {weather="locationId=FIO, type=atmosphere, property=pressure"} 
+
+Number   Humidity_FIO         "Humidity [%d %%]"  (OutsideWeatherFIO)    {weather="locationId=FIO, type=atmosphere, property=humidity"}
+
+Number   Rain_FIO          "Rain [%.2f mm/h]"  (OutsideWeatherFIO) {weather="locationId=FIO, type=precipitation, property=rain"}
+
+Number   Wind_Speed_FIO           "Windspeed [%.2f km/h]"  (OutsideWeatherFIO)  {weather="locationId=FIO, type=wind, property=speed"}
 
