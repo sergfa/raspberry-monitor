@@ -17,3 +17,20 @@ when
 then
   postUpdate(SenseHat_LastUpdate, new DateTimeType())
 end
+
+// Creates an item that stores the last update time of this item
+rule "Records last OWM update time"
+when
+  Item Temperature_OWM received update
+then
+  postUpdate(OWM_LastUpdate, new DateTimeType())
+end
+
+// Creates an item that stores the last update time of this item
+rule "Records last FIO update time"
+when
+  Item Temperature_FIO received update
+then
+  postUpdate(FIO_LastUpdate, new DateTimeType())
+end
+

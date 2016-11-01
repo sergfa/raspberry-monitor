@@ -3,7 +3,7 @@ Group Device
 Group OutsideWeatherOWM
 Group OutsideWeatherFIO
 
-DateTime		Date			"Date [%1$tA, %1$td.%1$tm.%1$tY]"	<calendar>	{ ntp="Europe/Berlin:de_DE" }
+DateTime		Date			"Date [%1$ta %1$tR, %1$td.%1$tm.%1$tY]"	<calendar>	{ ntp="" }
 
 Number RpiCpuTemperature "CPU Temperature [%.1f °C]" <temperature> (Server)
 Number RpiGpuTemperature "GPU Temperature [%.1f °C]" <temperature> (Server)
@@ -33,6 +33,8 @@ Number   Rain_OWM          "Rain [%.2f mm/h]" (OutsideWeatherOWM)  {weather="loc
 
 Number   Wind_Speed_OWM           "Windspeed [%.2f km/h]" (OutsideWeatherOWM)   {weather="locationId=OWM, type=wind, property=speed"}
 
+DateTime OWM_LastUpdate	"Last Temperature Update [%1$ta %1$tR, %1$td.%1$tm.%1$tY]" <clock> (OutsideWeatherOWM)
+
 Number   Temperature_FIO "Outside Temperature by FIO [%.2f °C]"  <temperature> (OutsideWeatherFIO)     {weather="locationId=FIO, type=temperature, property=current"}
 
 Number   Pressure_FIO         "Pressure [%.2f mb]"  (OutsideWeatherFIO)  {weather="locationId=FIO, type=atmosphere, property=pressure"} 
@@ -43,3 +45,4 @@ Number   Rain_FIO          "Rain [%.2f mm/h]"  (OutsideWeatherFIO) {weather="loc
 
 Number   Wind_Speed_FIO           "Windspeed [%.2f km/h]"  (OutsideWeatherFIO)  {weather="locationId=FIO, type=wind, property=speed"}
 
+DateTime FIO_LastUpdate	"Last Temperature Update [%1$ta %1$tR, %1$td.%1$tm.%1$tY]" <clock> (OutsideWeatherFIO)
