@@ -1,6 +1,10 @@
 sitemap home label="My Home"
 {
 
+  Frame label="Date" {
+        Text item=Date
+  }
+ 
  Frame {
   Group item=Server label="Server Information" icon="chart"
  } 
@@ -8,8 +12,29 @@ sitemap home label="My Home"
  
   Frame {
   Group item=Device label="Devices" icon="chart"
- } 
+ }
+
  
+ Frame label="Outside Weather" {
+        Text label="Weather by OpenWeatherMap" icon="temperature" {
+            Text   Temperature_OWM      valuecolor=[>25="orange",>15="green",<=15="blue"]
+            Text   Pressure_OWM 
+            Text   Humidity_OWM
+            Text   Clouds_OWM
+            Text   Rain_OWM
+            Text   Wind_Speed_OWM
+
+        }
+        Text label="Weather by ForecastIo" icon="temperature" {
+            Text   Temperature_FIO      valuecolor=[>25="orange",>15="green",<=15="blue"]
+            Text   Pressure_FIO 
+            Text   Humidity_FIO
+            Text   Clouds_FIO
+            Text   Rain_FIO
+            Text   Wind_Speed_FIO
+
+       }
+    }
  
 
 }

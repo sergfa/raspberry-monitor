@@ -5,5 +5,5 @@ logs/*.log
 env/config.cfg
 env/presense.txt
 env/presence.txt
-
+openhab/configurations/openhab.cfg
 

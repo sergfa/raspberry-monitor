@@ -1,7 +1,9 @@
 Group Server
 Group Device
+Group OutsideWeatherOWM
+Group OutsideWeatherOWM
 
-
+FIO
 Number RpiCpuTemperature "CPU Temperature [%.1f °C]" <temperature> (Server)
 Number RpiGpuTemperature "GPU Temperature [%.1f °C]" <temperature> (Server)
 String RpiPublicIp "Public IP [%s]" <network> (Server)
@@ -19,4 +21,18 @@ String DevicePresenseEmiSamsung6 "Emi Samsung 6 [%s]" <network> (Device)
 String DevicePresenseNirLG4 "Nir LG 4 [%s]" <network> (Device)
 String DevicePresenseSergeyHTC8 "Sergey HTC 8 [%s]" <network> (Device)
 
+
+Number   Temperature_OWM      "Temperature [%.2f °C]"       {weather="locationId=home-OWM, type=temperature, property=current"} (OutsideWeatherOWM)
+Number   Pressure_OWM         "Pressure [%.2f mb]"    {weather="locationId=home-OWM, type=atmosphere, property=pressure"} (OutsideWeatherOWM)
+Number   Humidity_OWM         "Humidity [%d %%]"      {weather="locationId=home-OWM, type=atmosphere, property=humidity"}
+Number   Clouds_OWM   "Clouds [%.0f %%]"   {weather="locationId=home-OWM, type=clouds, property=percent"} (OutsideWeatherOWM)
+Number   Rain_OWM          "Rain [%.2f mm/h]"   {weather="locationId=home-OWM, type=precipitation, property=rain"} (OutsideWeatherOWM)
+Number   Wind_Speed_OWM           "Windspeed [%.2f km/h]"    {weather="locationId=home-OWM, type=wind, property=speed"} (OutsideWeatherOWM)
+
+Number   Temperature_FIO      "Temperature [%.2f °C]"       {weather="locationId=home-FIO, type=temperature, property=current"} (OutsideWeatherOWM)
+Number   Pressure_FIO         "Pressure [%.2f mb]"    {weather="locationId=home-FIO, type=atmosphere, property=pressure"} (OutsideWeatherOWM)
+Number   Humidity_FIO         "Humidity [%d %%]"      {weather="locationId=home-FIO, type=atmosphere, property=humidity"}
+Number   Clouds_FIO   "Clouds [%.0f %%]"   {weather="locationId=home-FIO, type=clouds, property=percent"} (OutsideWeatherOWM)
+Number   Rain_FIO          "Rain [%.2f mm/h]"   {weather="locationId=home-FIO, type=precipitation, property=rain"} (OutsideWeatherOWM)
+Number   Wind_Speed_FIO           "Windspeed [%.2f km/h]"    {weather="locationId=home-FIO, type=wind, property=speed"} (OutsideWeatherOWM)
 
