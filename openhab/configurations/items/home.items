@@ -5,16 +5,18 @@ Group OutsideWeatherFIO
 
 DateTime		Date			"Date [%1$ta %1$tR, %1$td.%1$tm.%1$tY]"	<calendar>	{ ntp="" }
 
+String uptimeFormatted  "Uptime [%s]" (Server) { systeminfo="UptimeFormatted:5000" }
+
 Number RpiCpuTemperature "CPU Temperature [%.1f °C]" <temperature> (Server)
 Number RpiGpuTemperature "GPU Temperature [%.1f °C]" <temperature> (Server)
 String RpiPublicIp "Public IP [%s]" <network> (Server)
 DateTime RpiPublicIp_LastUpdate	"Last Public IP Update [%1$ta %1$tR, %1$td.%1$tm.%1$tY]" <clock> (Server)
 
 
-Number SenseHatTemperature 		"SenseHat Temperature [%.1f °C]"	<temperature> (Server)
-Number SenseHatHumidity 		"SenseHat Humidity [%.1f %%]"	<humidity> (Server)
-Number SenseHatPressure 		"SenseHat Pressure [%.1f]"	<pressure> (Server)
-DateTime SenseHat_LastUpdate	"Last SenseHat Update [%1$ta %1$tR, %1$td.%1$tm.%1$tY]" <clock> (Server)
+Number SenseHatTemperature 		"SH Temperature [%.1f °C]"	<temperature> (Server)
+Number SenseHatHumidity 		"SH Humidity [%.1f %%]"	<humidity> (Server)
+Number SenseHatPressure 		"SH Pressure [%.1f]"	<pressure> (Server)
+DateTime SenseHat_LastUpdate	"Last SH Update [%1$ta %1$tR, %1$td.%1$tm.%1$tY]" <clock> (Server)
 
 
 String DevicePresenseInaSamsung6 "Ina Samsung 6 [%s]" <network> (Device)
@@ -23,7 +25,7 @@ String DevicePresenseNirLG4 "Nir LG 4 [%s]" <network> (Device)
 String DevicePresenseSergeyHTC8 "Sergey HTC 8 [%s]" <network> (Device)
 
 
-Number   Temperature_OWM      "Outside Temperature by OWM[%.2f °C]" <temperature> (OutsideWeatherOWM)      {weather="locationId=OWM, type=temperature, property=current"} 
+Number   Temperature_OWM      "Outside Temperature[%.2f °C]" <temperature>      {weather="locationId=OWM, type=temperature, property=current"} 
 
 Number   Pressure_OWM         "Pressure [%.2f mb]" (OutsideWeatherOWM)  {weather="locationId=OWM, type=atmosphere, property=pressure"} 
 
@@ -33,9 +35,9 @@ Number   Rain_OWM          "Rain [%.2f mm/h]" (OutsideWeatherOWM)  {weather="loc
 
 Number   Wind_Speed_OWM           "Windspeed [%.2f km/h]" (OutsideWeatherOWM)   {weather="locationId=OWM, type=wind, property=speed"}
 
-DateTime OWM_LastUpdate	"Last Temperature Update [%1$ta %1$tR, %1$td.%1$tm.%1$tY]" <clock> (OutsideWeatherOWM)
+DateTime OWM_LastUpdate	"Last Update [%1$ta %1$tR, %1$td.%1$tm.%1$tY]" <clock>
 
-Number   Temperature_FIO "Outside Temperature by FIO [%.2f °C]"  <temperature> (OutsideWeatherFIO)     {weather="locationId=FIO, type=temperature, property=current"}
+Number   Temperature_FIO "Outside Temperature [%.2f °C]"  <temperature>  {weather="locationId=FIO, type=temperature, property=current"}
 
 Number   Pressure_FIO         "Pressure [%.2f mb]"  (OutsideWeatherFIO)  {weather="locationId=FIO, type=atmosphere, property=pressure"} 
 
@@ -45,4 +47,5 @@ Number   Rain_FIO          "Rain [%.2f mm/h]"  (OutsideWeatherFIO) {weather="loc
 
 Number   Wind_Speed_FIO           "Windspeed [%.2f km/h]"  (OutsideWeatherFIO)  {weather="locationId=FIO, type=wind, property=speed"}
 
-DateTime FIO_LastUpdate	"Last Temperature Update [%1$ta %1$tR, %1$td.%1$tm.%1$tY]" <clock> (OutsideWeatherFIO)
+DateTime FIO_LastUpdate	"Last Temp Update [%1$ta %1$tR, %1$td.%1$tm.%1$tY]" <clock>
+

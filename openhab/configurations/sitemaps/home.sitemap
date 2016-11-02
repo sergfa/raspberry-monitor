@@ -3,8 +3,6 @@ sitemap home label="My Home"
 
   Frame label="Hi, there" {
         Text item=Date
-        Text item=Temperature_FIO
-        Text item=Temperature_OWM
   }
  
  Frame {
@@ -16,13 +14,18 @@ sitemap home label="My Home"
      Group item=Device label="Devices" icon="chart"
  }
 
-  Frame {
-      Group item=OutsideWeatherOWM label="Outside Weather by OpenWeatherMap" icon="temperature"
+  
+  Frame label="Weather by OpenWeatherMap"{
+        Text item=Temperature_OWM
+        Text item=OWM_LastUpdate
+        Group item=OutsideWeatherOWM label="More..." icon="temperature"
  }
-  Frame {
-      Group item=OutsideWeatherFIO label="Outside Weather by ForecastIo" icon="temperature"
+  Frame label="Weather by ForecastIo" {
+      Text item=Temperature_FIO
+      Text item=FIO_LastUpdate
+      Group item=OutsideWeatherFIO label="More..." icon="temperature"
  }
 
- 
+  
 
 }
