@@ -2,6 +2,8 @@ Group Server
 Group Device
 Group OutsideWeatherOWM
 Group OutsideWeatherFIO
+Group LivingRoom
+Group Lights
 
 DateTime		Date			"Date [%1$ta %1$tR, %1$td.%1$tm.%1$tY]"	<calendar>	{ ntp="" }
 
@@ -49,3 +51,5 @@ Number   Wind_Speed_FIO           "Windspeed [%.2f km/h]"  (OutsideWeatherFIO)  
 
 DateTime FIO_LastUpdate	"Last Temp Update [%1$ta %1$tR, %1$td.%1$tm.%1$tY]" <clock>
 
+Switch Light_SWITCH_LR_Hue1   "Living Room TV"     (Lights, LivingRoom) {hue="1"}
+Switch Light_SWITCH_LR_Hue2   "Living Room Table"     (Lights, LivingRoom) {hue="2"}
